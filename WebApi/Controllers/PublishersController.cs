@@ -20,12 +20,37 @@ namespace WebApi.Controllers
             _publisherService = publisherService;
         }
 
+        #region Gets
+
         [HttpGet("get-all-publishers")]
         public IActionResult GetAllPublishers()
         {
             var allPublishers = _publisherService.GetAllPublishers();
             return Ok(allPublishers);
         }
+
+        [HttpGet("get-publisher-by-id/{id}")]
+        public IActionResult GetPublisherById(int id)
+        {
+            var publisher = _publisherService.GetPublisherById(id);
+            if (publisher == null)
+                return BadRequest($"Invalid id : {id}");
+            return Ok(publisher);
+        }
+
+        [HttpGet("get-publisher-books-with-authors/{id}")]
+        public IActionResult GetPublisherData(int id)
+        {
+            var _allPublisherData = _publisherService.GetPublisherData(id);
+            if (_allPublisherData != null)
+                return Ok(_allPublisherData);
+            else
+                return BadRequest($"Invalid id : {id}");
+        }
+
+        #endregion
+
+        #region Posts
 
         [HttpPost("add-new-publisher")]
         public IActionResult AddPublisher([FromBody] PublisherVM publisher)
@@ -34,32 +59,35 @@ namespace WebApi.Controllers
             return Created(nameof(AddPublisher), newPublisher);
         }
 
+        #endregion
+
+        #region Deletes
+
         [HttpDelete("delete-publisher/{id}")]
         public IActionResult DeletePublisher(int id)
         {
             var deletedPublisher = _publisherService.DeletePublisher(id);
             if (deletedPublisher == null)
-                return BadRequest(id);
+                return BadRequest($"Invalid id : {id}");
             return Ok(deletedPublisher);
         }
+
+        #endregion
+
+        #region Puts
 
         [HttpPut("edit-publisher/{id}")]
         public IActionResult EditPublisher([FromBody] PublisherVM publisher, int id)
         {
             var editedPublisher = _publisherService.EditPublisher(id, publisher);
             if (editedPublisher == null)
-                return BadRequest();
+                return BadRequest("Invalid id or body");
             return Ok(editedPublisher);
-        }
+        } 
 
-        [HttpGet("get-publisher-by-id/{id}")]
-        public IActionResult GetPublisherById(int id)
-        {
-            var publisher = _publisherService.GetPublisherById(id);
-            if (publisher == null)
-                return BadRequest(id);
-            return Ok(publisher);
-        }
+        #endregion
+
+
 
     }
 }

@@ -20,12 +20,27 @@ namespace WebApi.Controllers
             _authorService = authorService;
         }
 
+        #region Gets
+
         [HttpGet("get-all-authors")]
         public IActionResult GetAllAuthors()
         {
             var allAuthors = _authorService.GetAllAuthors();
             return Ok(allAuthors);
         }
+
+        [HttpGet("get-author-by-id/{id}")]
+        public IActionResult GetAuthorById(int id)
+        {
+            var author = _authorService.GetAuthorById(id);
+            if (author == null)
+                return BadRequest($"Invalid id : {id}");
+            return Ok(author);
+        }
+
+        #endregion
+
+        #region Posts
 
         [HttpPost("add-author")]
         public IActionResult AddAuthor(AuthorVM author)
@@ -34,32 +49,35 @@ namespace WebApi.Controllers
             return Created(nameof(AddAuthor), newAuthor);
         }
 
+        #endregion
+
+        #region Deletes
+
         [HttpDelete("delete-author/{id}")]
         public IActionResult DeleteAuthor(int id)
         {
             var deletedAuthor = _authorService.DeleteAuthor(id);
             if (deletedAuthor == null)
-                return BadRequest(id);
+                return BadRequest($"Invalid id : {id}");
             return Ok(deletedAuthor);
         }
+
+        #endregion
+
+        #region Puts
 
         [HttpPut("edit-author/{id}")]
         public IActionResult EditAuthor([FromBody] AuthorVM author, int id)
         {
             var editedAuthor = _authorService.EditAuthor(id, author);
             if (editedAuthor == null)
-                return BadRequest();
+                return BadRequest("Invalid id or body");
             return Ok(editedAuthor);
-        }
+        } 
 
-        [HttpGet("get-author-by-id/{id}")]
-        public IActionResult GetAuthorById(int id)
-        {
-            var author = _authorService.GetAuthorById(id);
-            if (author == null)
-                return BadRequest(id);
-            return Ok(author);
-        }
+        #endregion
+
+
 
     }
 }

@@ -22,12 +22,27 @@ namespace WebApi.Controllers
             _bookService = bookService;
         }
 
+        #region Gets
+
         [HttpGet("get-all-books")]
         public IActionResult GetAllBooks()
         {
             var allBooks = _bookService.GetAllBooks();
             return Ok(allBooks);
         }
+
+        [HttpGet("get-book-by-id/{id}")]
+        public IActionResult GetBookById(int id)
+        {
+            var book = _bookService.GetBookById(id);
+            if (book == null)
+                return BadRequest($"Invalid id : {id}");
+            return Ok(book);
+        }
+
+        #endregion
+
+        #region Posts
 
         [HttpPost("add-new-book")]
         public IActionResult AddBook(Book book) // ([FromBody] Book book)
@@ -43,14 +58,22 @@ namespace WebApi.Controllers
             return Ok();
         }
 
+        #endregion
+
+        #region Deletes
+
         [HttpDelete("delete-book/{id}")]
         public IActionResult DeleteBook(int id)
         {
             var deletedBook = _bookService.DeleteBook(id);
             if (deletedBook == null)
-                return BadRequest(id);
+                return BadRequest($"Invalid id : {id}");
             return Ok(deletedBook);
         }
+
+        #endregion
+
+        #region Puts
 
         [HttpPut("edit-book/{id}")]
         public IActionResult EditBook([FromBody] BookVM book, int id)
@@ -61,14 +84,9 @@ namespace WebApi.Controllers
             return Ok(book);
         }
 
-        [HttpGet("get-book-by-id/{id}")]
-        public IActionResult GetBookById(int id)
-        {
-            var book = _bookService.GetBookById(id);
-            if (book == null)
-                return BadRequest(id);
-            return Ok(book);
-        }
+        #endregion
+
+
 
     }
 }

@@ -63,5 +63,22 @@ namespace WebApi.Data.Services
             var publisher = _db.Publishers.FirstOrDefault(p => p.Id == id);
             return publisher;
         }
+
+        public PublisherWithBooksAndAuthors GetPublisherData(int id)
+        {
+            var _publisherData =
+                _db.Publishers.Where(p => p.Id == id)
+                .Select(p => new PublisherWithBooksAndAuthors()
+                {
+                    Name = p.Name,
+                    BookAuthors = p.Books.Select(b => new BookAuthorVM()
+                    {
+                        BookName = b.Title,
+                        BookAuthors = b.Book_Authors.Where(ba => ba.BookId == b.Id).Select(ba => ba.Author.Name).ToList()
+                    })
+                    .ToList()
+                }).FirstOrDefault();
+            return _publisherData;
+        }
     }
 }
