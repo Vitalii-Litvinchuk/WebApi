@@ -12,4 +12,11 @@ namespace WebApi.Data.ViewModels
         public string Surname { get; set; }
     }
 
+    public class AuthorWithBookVM
+    {
+        public string FullName { get; set; }
+
+        public List<string> BookTitles { get; set; } 
+    }
+
 }

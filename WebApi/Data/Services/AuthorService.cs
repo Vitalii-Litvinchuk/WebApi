@@ -65,5 +65,15 @@ namespace WebApi.Data.Services
             var author = _db.Authors.FirstOrDefault(p => p.Id == id);
             return author;
         }
+
+        public AuthorWithBookVM GetAuthorWithBooks(int id)
+        {
+            var _author = _db.Authors.Where(a => a.Id == id).Select(a => new AuthorWithBookVM()
+            {
+                FullName = a.FullName,
+                BookTitles = a.Book_Authors.Select(ba => ba.Book.Title).ToList()
+            }).FirstOrDefault();
+            return _author;
+        }
     }
 }
