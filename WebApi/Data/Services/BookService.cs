@@ -78,25 +78,22 @@ namespace WebApi.Data.Services
                 oldBook.ImageURL = book.ImageURL;
                 oldBook.PublisherId = book.PublisherId;
                 _db.Books.Update(oldBook);
-                _db.SaveChanges();
 
-
-                foreach (var author in _db.Book_Authors.Where(ba => ba.BookId == id))
-                {
-                    _db.Book_Authors.Remove(author);
-                    _db.SaveChanges();
-                }
+                foreach (var book_author in _db.Book_Authors.Where(ba => ba.BookId == oldBook.Id))
+                    _db.Book_Authors.Remove(book_author);
 
                 foreach (var Id in book.AuthorsIds)
-                {
-                    var _book_author = new Book_Author()
+                    if (_db.Authors.FirstOrDefault(a => a.Id == Id) != null)
                     {
-                        BookId = oldBook.Id,
-                        AuthorId = Id
-                    };
-                    _db.Book_Authors.Add(_book_author);
-                    _db.SaveChanges();
-                }
+                        var _book_author = new Book_Author()
+                        {
+                            BookId = oldBook.Id,
+                            AuthorId = Id
+                        };
+                        _db.Book_Authors.Add(_book_author);
+                    }
+
+                _db.SaveChanges();
             }
             return oldBook;
         }

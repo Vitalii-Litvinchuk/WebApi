@@ -36,7 +36,7 @@ namespace WebApi.Controllers
             return Ok(book);
         }
 
-        [HttpPost("add-new-book-with-books")]
+        [HttpPost("add-new-book-with-authors")]
         public IActionResult AddBook([FromBody] BookVM book)
         {
             _bookService.AddBookWithAuthors(book);
@@ -57,8 +57,8 @@ namespace WebApi.Controllers
         {
             var editedBook = _bookService.EditBook(id, book);
             if (editedBook == null)
-                return BadRequest();
-            return Ok(editedBook);
+                return BadRequest("Invalid id or body");
+            return Ok(book);
         }
 
         [HttpPatch("get-book-by-id/{id}")]
