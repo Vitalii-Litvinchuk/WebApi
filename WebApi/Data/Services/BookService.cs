@@ -98,7 +98,7 @@ namespace WebApi.Data.Services
             return oldBook;
         }
 
-        public Book GetById(int id)
+        public Book GetBookById(int id)
         {
             var book = _db.Books.FirstOrDefault(p => p.Id == id);
             return book;

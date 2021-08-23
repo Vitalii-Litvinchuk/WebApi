@@ -52,10 +52,10 @@ namespace WebApi.Controllers
             return Ok(editedAuthor);
         }
 
-        [HttpPatch("get-author-by-id/{id}")]
-        public IActionResult GetById(int id)
+        [HttpGet("get-author-by-id/{id}")]
+        public IActionResult GetAuthorById(int id)
         {
-            var author = _authorService.GetById(id);
+            var author = _authorService.GetAuthorById(id);
             if (author == null)
                 return BadRequest(id);
             return Ok(author);

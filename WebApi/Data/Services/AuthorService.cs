@@ -60,7 +60,7 @@ namespace WebApi.Data.Services
             return oldAuthor;
         }
 
-        public Author GetById(int id)
+        public Author GetAuthorById(int id)
         {
             var author = _db.Authors.FirstOrDefault(p => p.Id == id);
             return author;

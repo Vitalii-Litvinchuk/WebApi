@@ -9,4 +9,18 @@ namespace WebApi.Data.ViewModels
     {
         public string Name { get; set; }
     }
+
+    public class BookAuthorVM
+    {
+        public string BookName { get; set; }
+
+        public List<string> BookAuthors { get; set; }
+    }
+
+    public class PublisherWithBooksAndAuthors
+    {
+        public string Name { get; set; }
+
+        public List<BookAuthorVM> BookAuthors { get; set; }
+    }
 }

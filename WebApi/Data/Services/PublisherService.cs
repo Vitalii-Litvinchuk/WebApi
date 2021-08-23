@@ -58,7 +58,7 @@ namespace WebApi.Data.Services
             return oldPublisher;
         }
 
-        public Publisher GetById(int id)
+        public Publisher GetPublisherById(int id)
         {
             var publisher = _db.Publishers.FirstOrDefault(p => p.Id == id);
             return publisher;

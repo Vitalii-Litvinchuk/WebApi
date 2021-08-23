@@ -61,10 +61,10 @@ namespace WebApi.Controllers
             return Ok(book);
         }
 
-        [HttpPatch("get-book-by-id/{id}")]
-        public IActionResult GetById(int id)
+        [HttpGet("get-book-by-id/{id}")]
+        public IActionResult GetBookById(int id)
         {
-            var book = _bookService.GetById(id);
+            var book = _bookService.GetBookById(id);
             if (book == null)
                 return BadRequest(id);
             return Ok(book);
