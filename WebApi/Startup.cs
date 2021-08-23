@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Data;
 using WebApi.Data.Services;
+using WebApi.Exceptions;
 
 namespace WebApi
 {
@@ -58,6 +59,9 @@ namespace WebApi
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.ConfigureCustomExceptionHandler();
+
 
             app.UseEndpoints(endpoints =>
             {

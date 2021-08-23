@@ -40,6 +40,16 @@ namespace WebApi.Controllers
             return Ok(book);
         }
 
+        [HttpGet("get-book-with-authors-by-id/{id}")]
+        public IActionResult GetBookWithAutorsById(int id)
+        {
+            var _book = _bookService.GetBookWithAutorsById(id);
+            if (_book != null)
+                return Ok(_book);
+            else
+                return BadRequest($"Invalid id : {id}");
+        }
+
         #endregion
 
         #region Posts

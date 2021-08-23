@@ -38,7 +38,7 @@ namespace WebApi.Controllers
             return Ok(author);
         }
 
-        [HttpGet("get-author-with-book/{id}")]
+        [HttpGet("get-author-with-books/{id}")]
         public IActionResult GetAuthorWithBooks(int id)
         {
             var _books = _authorService.GetAuthorWithBooks(id);

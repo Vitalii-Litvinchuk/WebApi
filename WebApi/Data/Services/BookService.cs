@@ -66,6 +66,25 @@ namespace WebApi.Data.Services
             return book;
         }
 
+        public BookWithAutorsVM GetBookWithAutorsById(int id)
+        {
+            var _book = _db.Books.Where(b => b.Id == id)
+                .Select(b => new BookWithAutorsVM()
+                {
+                    Title = b.Title,
+                    Description = b.Description,
+                    IsRead = b.IsRead,
+                    DateRead = b.DateRead,
+                    Rate = b.Rate,
+                    Genre = b.Genre,
+                    ImageURL = b.ImageURL,
+                    PublisherName = b.Publisher.Name,
+                    AuthorsNames = b.Book_Authors.Select(ba => ba.Author.FullName).ToList()
+                })
+                .FirstOrDefault();
+            return _book;
+        }
+
         #endregion
 
         #region Edits
