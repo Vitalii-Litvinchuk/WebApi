@@ -17,6 +17,8 @@ namespace WebApi.Data.Services
             _db = db;
         }
 
+        #region Adds
+
         public void AddBookWithAuthors(BookVM book)
         {
             var newBook = new Book()
@@ -45,7 +47,6 @@ namespace WebApi.Data.Services
             }
         }
 
-        public List<Book> GetAllBooks() => _db.Books.ToList();
 
         public void AddBook(Book book)
         {
@@ -53,16 +54,21 @@ namespace WebApi.Data.Services
             _db.SaveChanges();
         }
 
-        public Book DeleteBook(int id)
+        #endregion
+
+        #region Gets
+
+        public List<Book> GetAllBooks() => _db.Books.ToList();
+
+        public Book GetBookById(int id)
         {
-            var deleteBook = _db.Books.FirstOrDefault(p => p.Id == id);
-            if (deleteBook != null)
-            {
-                _db.Books.Remove(deleteBook);
-                _db.SaveChanges();
-            }
-            return deleteBook;
+            var book = _db.Books.FirstOrDefault(p => p.Id == id);
+            return book;
         }
+
+        #endregion
+
+        #region Edits
 
         public Book EditBook(int id, BookVM book)
         {
@@ -98,10 +104,24 @@ namespace WebApi.Data.Services
             return oldBook;
         }
 
-        public Book GetBookById(int id)
+        #endregion
+
+        #region Deletes
+
+        public Book DeleteBook(int id)
         {
-            var book = _db.Books.FirstOrDefault(p => p.Id == id);
-            return book;
+            var deleteBook = _db.Books.FirstOrDefault(p => p.Id == id);
+            if (deleteBook != null)
+            {
+                _db.Books.Remove(deleteBook);
+                _db.SaveChanges();
+            }
+            return deleteBook;
         }
+
+        #endregion
+
+
+        
     }
 }

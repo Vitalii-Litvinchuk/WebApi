@@ -16,6 +16,8 @@ namespace WebApi.Data.Services
             _db = db;
         }
 
+        #region Adds
+
         public Publisher AddPublisher(PublisherVM publisher)
         {
             var _publisher = new Publisher()
@@ -29,33 +31,14 @@ namespace WebApi.Data.Services
             return _publisher;
         }
 
+        #endregion
+
+        #region Gets
+
         public List<Publisher> GetAllPublishers()
         {
             var allPublishers = _db.Publishers.ToList();
             return allPublishers;
-        }
-
-        public Publisher DeletePublisher(int id)
-        {
-            var delete = _db.Publishers.FirstOrDefault(p => p.Id == id);
-            if (delete != null)
-            {
-                _db.Publishers.Remove(delete);
-                _db.SaveChanges();
-            }
-            return delete;
-        }
-
-        public Publisher EditPublisher(int id, PublisherVM publisher)
-        {
-            var oldPublisher = _db.Publishers.FirstOrDefault(p => p.Id == id);
-            if (oldPublisher != null)
-            {
-                oldPublisher.Name = publisher.Name;
-                _db.Publishers.Update(oldPublisher);
-                _db.SaveChanges();
-            }
-            return oldPublisher;
         }
 
         public Publisher GetPublisherById(int id)
@@ -80,5 +63,41 @@ namespace WebApi.Data.Services
                 }).FirstOrDefault();
             return _publisherData;
         }
+
+        #endregion
+
+        #region Edits
+
+
+        public Publisher EditPublisher(int id, PublisherVM publisher)
+        {
+            var oldPublisher = _db.Publishers.FirstOrDefault(p => p.Id == id);
+            if (oldPublisher != null)
+            {
+                oldPublisher.Name = publisher.Name;
+                _db.Publishers.Update(oldPublisher);
+                _db.SaveChanges();
+            }
+            return oldPublisher;
+        }
+
+        #endregion
+
+        #region Deletes
+
+        public Publisher DeletePublisher(int id)
+        {
+            var delete = _db.Publishers.FirstOrDefault(p => p.Id == id);
+            if (delete != null)
+            {
+                _db.Publishers.Remove(delete);
+                _db.SaveChanges();
+            }
+            return delete;
+        }
+
+        #endregion
+
+
     }
 }

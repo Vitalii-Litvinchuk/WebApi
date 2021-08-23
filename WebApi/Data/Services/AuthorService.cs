@@ -16,6 +16,8 @@ namespace WebApi.Data.Services
             _db = db;
         }
 
+        #region Adds
+
         public Author AddAuthor(AuthorVM author)
         {
             var newAuthor = new Author()
@@ -30,34 +32,14 @@ namespace WebApi.Data.Services
             return newAuthor;
         }
 
+        #endregion
+
+        #region Gets
+
         public List<Author> GetAllAuthors()
         {
             var allAuthors = _db.Authors.ToList();
             return allAuthors;
-        }
-
-        public Author DeleteAuthor(int id)
-        {
-            var deleteAuthor = _db.Authors.FirstOrDefault(p => p.Id == id);
-            if (deleteAuthor != null)
-            {
-                _db.Authors.Remove(deleteAuthor);
-                _db.SaveChanges();
-            }
-            return deleteAuthor;
-        }
-
-        public Author EditAuthor(int id, AuthorVM publisher)
-        {
-            var oldAuthor = _db.Authors.FirstOrDefault(p => p.Id == id);
-            if (oldAuthor != null)
-            {
-                oldAuthor.Name = publisher.Name;
-                oldAuthor.Surname = publisher.Surname;
-                _db.Authors.Update(oldAuthor);
-                _db.SaveChanges();
-            }
-            return oldAuthor;
         }
 
         public Author GetAuthorById(int id)
@@ -75,5 +57,41 @@ namespace WebApi.Data.Services
             }).FirstOrDefault();
             return _author;
         }
+
+        #endregion
+
+        #region Edits
+
+        public Author EditAuthor(int id, AuthorVM publisher)
+        {
+            var oldAuthor = _db.Authors.FirstOrDefault(p => p.Id == id);
+            if (oldAuthor != null)
+            {
+                oldAuthor.Name = publisher.Name;
+                oldAuthor.Surname = publisher.Surname;
+                _db.Authors.Update(oldAuthor);
+                _db.SaveChanges();
+            }
+            return oldAuthor;
+        }
+
+        #endregion
+
+        #region Deletes
+
+        public Author DeleteAuthor(int id)
+        {
+            var deleteAuthor = _db.Authors.FirstOrDefault(p => p.Id == id);
+            if (deleteAuthor != null)
+            {
+                _db.Authors.Remove(deleteAuthor);
+                _db.SaveChanges();
+            }
+            return deleteAuthor;
+        }
+
+        #endregion
+
+
     }
 }
