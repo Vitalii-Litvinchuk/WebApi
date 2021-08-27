@@ -31,14 +31,103 @@ namespace WebApi.Data.Services
             return _publisher;
         }
 
+        public List<Publisher> AddPublishers(List<PublisherVM> publishers)
+        {
+            List<Publisher> lp = new List<Publisher>();
+            foreach (var publisher in publishers)
+            {
+                var _publisher = new Publisher()
+                {
+                    Name = publisher.Name
+                };
+                _db.Publishers.Add(_publisher);
+                lp.Add(_publisher);
+            }
+
+            _db.SaveChanges();
+            return lp;
+        }
+
         #endregion
 
         #region Gets
 
-        public List<Publisher> GetAllPublishers()
+        private readonly int countPublishersInPage = 6;
+        public PublisherPageData GetAllPublishers(bool? sort, string searchString, int pageNumber)
         {
-            var allPublishers = _db.Publishers.ToList();
-            return allPublishers;
+            bool search = false;
+            if (!string.IsNullOrEmpty(searchString))
+                search = !search;
+
+            int countPublishers = _db.Publishers.Count();
+            int amountPublishers = countPublishersInPage;
+            int nextPage = countPublishersInPage;
+
+            PublisherPageData ppd = new PublisherPageData();
+            List<Publisher> lp;
+
+            if (sort == null)
+                lp = _db.Publishers.ToList();
+            else if (sort == true)
+                lp = _db.Publishers.OrderBy((a) => a.Name).ToList();
+            else
+                lp = _db.Publishers.OrderByDescending((a) => a.Name).ToList();
+
+            if (search)
+            {
+                lp = lp.FindAll(a => a.Name == searchString);
+                countPublishers = lp.Count;
+            }
+
+            int other = countPublishers - countPublishers / countPublishersInPage * countPublishersInPage; 
+
+            int plus = 0;
+
+            if (other != 0)
+                plus = 1;
+
+            if (pageNumber >= countPublishers / countPublishersInPage + plus)
+            {
+                pageNumber = countPublishers / countPublishersInPage + 1;
+                amountPublishers = other;
+
+                if (other == 0)
+                {
+                    --pageNumber;
+                    amountPublishers = countPublishersInPage;
+                }
+
+                ppd.Next = false;
+            }
+
+            if (pageNumber > 0)
+                --pageNumber;
+
+            if (pageNumber < 0)
+                pageNumber = 0;
+
+            if (pageNumber == countPublishers / countPublishersInPage - 1)
+                nextPage = other;
+
+            ppd.CurrentPage = pageNumber + 1;
+
+            if (countPublishers / countPublishersInPage == pageNumber)
+                ppd.PublishersInNextPage = 0;
+            else
+                ppd.PublishersInNextPage = nextPage;
+
+            if (ppd.CurrentPage == 1)
+                ppd.Previous = false;
+
+            ppd.CountPublishers = countPublishers;
+            if (countPublishers > 0)
+                ppd.Publishers = lp.GetRange(pageNumber * countPublishersInPage, amountPublishers);
+            else
+            {
+                ppd.CurrentPage = 0;
+                ppd.Next = false;
+            }
+            return ppd;
         }
 
         public Publisher GetPublisherById(int id)

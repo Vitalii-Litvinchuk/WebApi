@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebApi.Data.ViewModels;
 using WebApi.Data.Services;
+using System.ComponentModel;
 
 namespace WebApi.Controllers
 {
@@ -23,9 +24,9 @@ namespace WebApi.Controllers
         #region Gets
 
         [HttpGet("get-all-publishers")]
-        public IActionResult GetAllPublishers()
+        public IActionResult GetAllPublishers(bool? sort, string searchString, int pageNumber)
         {
-            var allPublishers = _publisherService.GetAllPublishers();
+            var allPublishers = _publisherService.GetAllPublishers(sort, searchString, pageNumber);
             return Ok(allPublishers);
         }
 
@@ -59,6 +60,14 @@ namespace WebApi.Controllers
             return Created(nameof(AddPublisher), newPublisher);
         }
 
+        [HttpPost("add-new-publishers")]
+        public IActionResult AddPublishers([FromBody] List<PublisherVM> publishers)
+        {
+            var newPublishers = _publisherService.AddPublishers(publishers);
+            return Created(nameof(AddPublisher), newPublishers);
+        }
+
+
         #endregion
 
         #region Deletes
@@ -83,7 +92,7 @@ namespace WebApi.Controllers
             if (editedPublisher == null)
                 return BadRequest("Invalid id or body");
             return Ok(editedPublisher);
-        } 
+        }
 
         #endregion
 
