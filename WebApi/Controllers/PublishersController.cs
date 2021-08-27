@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using WebApi.Data.ViewModels;
 using WebApi.Data.Services;
 using System.ComponentModel;
+using Microsoft.Extensions.Logging;
 
 namespace WebApi.Controllers
 {
@@ -16,9 +17,12 @@ namespace WebApi.Controllers
     {
         private readonly PublisherService _publisherService;
 
-        public PublishersController(PublisherService publisherService)
+        private readonly ILogger<PublishersController> _logger;
+
+        public PublishersController(PublisherService publisherService, ILogger<PublishersController> logger)
         {
             _publisherService = publisherService;
+            _logger = logger;
         }
 
         #region Gets
@@ -26,6 +30,7 @@ namespace WebApi.Controllers
         [HttpGet("get-all-publishers")]
         public IActionResult GetAllPublishers(bool? sort, string searchString, int pageNumber)
         {
+            _logger.LogInformation($"sortBy: {sort}\tsearchString: {searchString}\tpaageNumber: {pageNumber}");
             var allPublishers = _publisherService.GetAllPublishers(sort, searchString, pageNumber);
             return Ok(allPublishers);
         }
