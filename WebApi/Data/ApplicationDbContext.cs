@@ -27,7 +27,7 @@ namespace WebApi.Data
             //    .WithMany(ba => ba.Book_Authors)
             //    .HasForeignKey(bi => bi.AuthorId);
 
-
+            modelBuilder.Entity<Log>().HasKey(l => l.Id);
 
             base.OnModelCreating(modelBuilder);
         }
@@ -39,6 +39,8 @@ namespace WebApi.Data
         public DbSet<Publisher> Publishers { get; set; }
 
         public DbSet<Book_Author> Book_Authors { get; set; }
+
+        public DbSet<Log> Logs { get; set; }
 
     }
 }
