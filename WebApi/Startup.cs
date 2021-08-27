@@ -33,6 +33,7 @@ namespace WebApi
             services.AddTransient<BookService>();
             services.AddTransient<PublisherService>();
             services.AddTransient<AuthorService>();
+            services.AddTransient<LogService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -45,7 +46,7 @@ namespace WebApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -60,8 +61,7 @@ namespace WebApi
 
             app.UseAuthorization();
 
-            app.ConfigureCustomExceptionHandler();
-
+            app.ConfigureBuildInExceptionHandler(loggerFactory);
 
             app.UseEndpoints(endpoints =>
             {
