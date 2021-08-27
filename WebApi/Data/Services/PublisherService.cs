@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApi.Data.Models;
+using WebApi.Data.Paging;
 using WebApi.Data.ViewModels;
 
 namespace WebApi.Data.Services
@@ -127,6 +128,10 @@ namespace WebApi.Data.Services
                 ppd.CurrentPage = 0;
                 ppd.Next = false;
             }
+
+            int? pageNumber1 = pageNumber;
+            lp = PaginationList<Publisher>.Create(lp.AsQueryable(), pageNumber1 ?? 1, countPublishersInPage);
+
             return ppd;
         }
 
