@@ -129,8 +129,8 @@ namespace WebApi.Data.Services
                 ppd.Next = false;
             }
 
-            int? pageNumber1 = pageNumber;
-            lp = PaginationList<Publisher>.Create(lp.AsQueryable(), pageNumber1 ?? 1, countPublishersInPage);
+            //int? pageNumber1 = pageNumber;
+            //lp = PaginationList<Publisher>.Create(lp.AsQueryable(), pageNumber1 ?? 1, countPublishersInPage);
 
             return ppd;
         }
