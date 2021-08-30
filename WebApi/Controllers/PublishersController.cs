@@ -65,12 +65,12 @@ namespace WebApi.Controllers
             return Created(nameof(AddPublisher), newPublisher);
         }
 
-        [HttpPost("add-new-publishers")]
-        public IActionResult AddPublishers([FromBody] List<PublisherVM> publishers)
-        {
-            var newPublishers = _publisherService.AddPublishers(publishers);
-            return Created(nameof(AddPublisher), newPublishers);
-        }
+        //[HttpPost("add-new-publishers")]
+        //public IActionResult AddPublishers([FromBody] List<PublisherVM> publishers)
+        //{
+        //    var newPublishers = _publisherService.AddPublishers(publishers);
+        //    return Created(nameof(AddPublisher), newPublishers);
+        //}
 
 
         #endregion
